@@ -1,0 +1,31 @@
+<calcite-shell content-behind class="app-shell">
+  <calcite-navigation slot="header">
+    <calcite-navigation-logo
+      heading="Webpack build"
+      icon="clustering"
+      alt="Application logo"
+      slot="logo"
+    ></calcite-navigation-logo>
+  </calcite-navigation>
+  <calcite-shell-panel slot="panel-end" display-mode="float" class="shell-panel-end">
+    <calcite-panel heading="Elevation profile" class="elevation-panel">
+      <div class="elevation-panel__body">
+        <arcgis-elevation-profile
+          #epHost
+          reference-element="main-map"
+          unit="metric"
+        ></arcgis-elevation-profile>
+      </div>
+    </calcite-panel>
+  </calcite-shell-panel>
+  <arcgis-map
+    #mapHost
+    id="main-map"
+    basemap="streets-vector"
+    center="12.5, 41.9"
+    zoom="5"
+    ground="world-elevation"
+  >
+    <arcgis-zoom slot="top-left"></arcgis-zoom>
+  </arcgis-map>
+</calcite-shell>

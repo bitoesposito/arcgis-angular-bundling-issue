@@ -1,6 +1,10 @@
 node_modules
 dist
+dist-webpack
 .angular
+src/assets
+dist
+dist-webpack
 
 .vscode
 .editorconfig

@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-webpack
+.angular
+.git
+.gitignore
+**/.DS_Store
+Thumbs.db
+.idea
+.vscode
+coverage
+*.log
+npm-debug.log*

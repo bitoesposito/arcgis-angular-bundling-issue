@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+calcite-shell.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+}
+
+.shell-panel-end {
+  --calcite-shell-panel-min-width: min(100vw - 1rem, 420px);
+  max-width: min(100vw - 1rem, 440px);
+  width: min(100%, 420px);
+  height: 100%;
+  max-height: 100%;
+}
+
+.elevation-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: min(100dvh - 4rem, 100%);
+  height: 100%;
+}
+
+.elevation-panel__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.elevation-panel__body arcgis-elevation-profile {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 220px;
+  width: 100%;
+}
+
+arcgis-map {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .shell-panel-end {
+    width: min(100vw - 0.5rem, 100%);
+    max-width: 100%;
+  }
+}

@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================
+   ArcGIS / Calcite (MODERNI)
+   ========================= */
+
+/* Calcite Components CSS */
+@import '@esri/calcite-components/dist/calcite/calcite.css';
+
+/* ArcGIS JS API theme */
+@import '@arcgis/core/assets/esri/themes/light/main.css';
+
+/* ArcGIS Map Components – ENTRYPOINT UFFICIALE (exports-safe) */
+@import '@arcgis/map-components/arcgis-map-components/arcgis-map-components.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}

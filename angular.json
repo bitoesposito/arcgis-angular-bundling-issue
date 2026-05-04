@@ -22,19 +22,27 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@esri/calcite-components/dist/calcite/assets",
+                "output": "calcite-components/assets"
               }
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "loader": {
+              ".woff2": "file"
+            }
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "4MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -48,6 +56,80 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "build-webpack": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "outputPath": "dist-webpack",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@esri/calcite-components/dist/calcite/assets",
+                "output": "calcite-components/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@arcgis/core/assets/esri/themes/light",
+                "output": "assets/vendor/arcgis-core/themes/light"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@arcgis/map-components/dist/cdn",
+                "output": "assets/vendor/arcgis-map-components"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@esri/calcite-components/dist/calcite",
+                "output": "assets/vendor/calcite"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "customWebpackConfig": {
+              "path": "./webpack.arcgis-css.cjs"
+            }
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "namedChunks": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4MB",
+                  "maximumError": "5MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "extractLicenses": false,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -83,6 +165,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@esri/calcite-components/dist/calcite/assets",
+                "output": "calcite-components/assets"
               }
             ],
             "styles": [

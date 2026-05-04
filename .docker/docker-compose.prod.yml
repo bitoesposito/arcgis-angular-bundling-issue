@@ -1,0 +1,16 @@
+services:
+  app-esbuild:
+    image: webpack-build:prod
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.prod-esbuild
+    ports:
+      - '8080:80'
+
+  app-webpack:
+    image: webpack-build:prod-webpack
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.prod-webpack
+    ports:
+      - '8081:80'
