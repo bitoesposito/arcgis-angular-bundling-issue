@@ -1,0 +1,12 @@
+services:
+  angular-dev:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true

@@ -1,0 +1,7 @@
+services:
+  angular-prod:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.prod
+    ports:
+      - "8080:80"
