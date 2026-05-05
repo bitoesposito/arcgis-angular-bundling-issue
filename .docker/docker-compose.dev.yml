@@ -1,6 +1,6 @@
 services:
   app:
-    image: webpack-build:dev
+    image: arcgis-build:dev
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev

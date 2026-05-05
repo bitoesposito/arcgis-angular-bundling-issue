@@ -1,6 +1,6 @@
 services:
   app-esbuild:
-    image: webpack-build:prod
+    image: arcgis-build:prod
     build:
       context: .
       dockerfile: .docker/Dockerfile.prod-esbuild
@@ -8,7 +8,7 @@ services:
       - '8080:80'
 
   app-webpack:
-    image: webpack-build:prod-webpack
+    image: arcgis-build:prod-webpack
     build:
       context: .
       dockerfile: .docker/Dockerfile.prod-webpack

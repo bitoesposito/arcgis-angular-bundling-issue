@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "app": {
+    "arcgis-build": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -142,10 +142,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "app:build:production"
+              "buildTarget": "arcgis-build:build:production"
             },
             "development": {
-              "buildTarget": "app:build:development"
+              "buildTarget": "arcgis-build:build:development"
             }
           },
           "defaultConfiguration": "development"

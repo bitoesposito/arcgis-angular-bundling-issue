@@ -1,10 +1,10 @@
 {
-  "name": "webpack-build",
+  "name": "angular-arcgis-esbuild-webpack",
   "version": "1.0.0",
   "scripts": {
     "dev": "ng serve",
     "build:esbuild": "ng build",
-    "build:webpack": "ng run app:build-webpack:production",
+    "build:webpack": "ng run arcgis-build:build-webpack:production",
     "build:all": "npm run build:esbuild && npm run build:webpack",
     "serve:esbuild": "serve dist/app/browser -l 4201 -s",
     "serve:webpack": "serve dist-webpack -l 4202 -s",

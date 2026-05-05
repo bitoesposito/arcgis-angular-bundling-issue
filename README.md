@@ -1,4 +1,4 @@
-# webpack-build
+# arcgis-build
 
 Angular repro that keeps **two production build pipelines** side-by-side:
 
@@ -99,8 +99,8 @@ npm run docker:dev  # http://localhost:4200
 ## What differs between the two builds
 
 - **Build target**:
-  - `app:build:production` uses `@angular/build:application` (esbuild)
-  - `app:build-webpack:production` uses `@angular-builders/custom-webpack:browser`
+  - `arcgis-build:build:production` uses `@angular/build:application` (esbuild)
+  - `arcgis-build:build-webpack:production` uses `@angular-builders/custom-webpack:browser`
 - **Output paths**:
   - esbuild: `dist/app/browser`
   - webpack: `dist-webpack`
