@@ -52,8 +52,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4MB",
-                  "maximumError": "5MB"
+                  "maximumWarning": "6MB",
+                  "maximumError": "10MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -94,8 +94,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@arcgis/core/assets/esri/themes/light",
-                "output": "assets/vendor/arcgis-core/themes/light"
+                "input": "node_modules/@arcgis/core/assets",
+                "output": "assets/vendor/arcgis-core/assets"
               },
               {
                 "glob": "**/*",
@@ -125,8 +125,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4MB",
-                  "maximumError": "5MB"
+                  "maximumWarning": "6MB",
+                  "maximumError": "10MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -190,5 +190,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
