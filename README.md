@@ -1,48 +1,127 @@
 # webpack-build
 
-Sample Angular app using **ArcGIS Map Components** and **Calcite**, set up to compare an **esbuild** build (Angular’s default application builder) with a parallel **webpack** build (`@angular-builders/custom-webpack`). The repo is meant to **reproduce and narrow down runtime differences** between the two pipelines (bundling, CSS, fonts, special chunks) when integrating the Esri stack.
+Angular repro that keeps **two production build pipelines** side-by-side:
 
-## Why two builds
+- **A (esbuild)**: Angular `@angular/build:application` (default)
+- **B (webpack)**: `@angular-builders/custom-webpack:browser` with a small merge focused on `@arcgis/*` and `@esri/*`
 
-- **esbuild** (`ng build`): default path, fast, aligned with typical deploys.
-- **webpack** (`ng run app:build-webpack:production`): fallback to mitigate bundling/splitting issues, CSS from `node_modules` (`@layer` and similar), **woff2** fonts referenced from stylesheets, and sensitive chunks (e.g. asm.js) if they break when processed by Angular’s Babel pipeline.
+The goal is to **isolate runtime divergences** that appear when using the Esri stack (**ArcGIS JS API / Map Components / Calcite**) and are hard to narrow down when you only have one bundler.
 
-Typical workflow: reproduce the issue with build A, compare with build B; if B fixes it, keep it as a temporary fallback while you track down the root cause on the esbuild side.
+## Purpose
 
-Implementation details: `build-webpack` target in `angular.json`, output under `dist-webpack/`, merged config in `webpack.arcgis-css.cjs` (rules scoped to `@arcgis/*` and `@esri/*`).
+When an issue reproduces only after deploy (or only on one build pipeline), this repo lets you ship the **same app** built in two ways and compare outputs and runtime behavior.
 
-## Requirements
+**Use cases:**
+- Compare **local vs deployed** runtime behavior when dev-server doesn’t reproduce
+- Reduce uncertainty around **bundling/splitting/asset handling** with ArcGIS/Calcite
+- Validate whether problems are caused by **CSS imported from JS** (e.g. `@layer`)
+- Validate **font/asset URLs** referenced by CSS (e.g. `.woff2`)
+- Avoid transforming **special chunks** (e.g. asm.js) that can break when passed through Babel
 
-- **Node.js** 20 (matches Docker images).
-- **Docker** and Docker Compose v2 for containerized production.
+## Core capabilities
 
-## Local builds
+### A/B build outputs (same source, two bundlers)
+You can build both pipelines and serve them independently, enabling fast comparison without changing application code.
+
+### Focused webpack merge for ArcGIS/Calcite
+`webpack.arcgis-css.cjs` adds narrowly-scoped rules for ArcGIS/Esri CSS + fonts and excludes ArcGIS chunks from Angular’s Babel loader when needed.
+
+### “Deploy-like” comparison via Docker + nginx
+Compose files build and serve each output as static files behind nginx, so you can compare behavior in an environment closer to typical hosting/CDN setups.
+
+## Architecture
+
+### Feature-based organization
+
+```text
+.
+├─ src/                      # Angular app source
+├─ public/                   # Static assets copied by both builders
+├─ webpack.arcgis-css.cjs    # Custom webpack merge (ArcGIS/Esri scoped)
+├─ angular.json              # Two build targets: build + build-webpack
+└─ .docker/                  # Dockerfiles + nginx + compose for A/B hosting
+```
+
+### Design principles
+
+**Separation of concerns**
+App code stays the same; the repo isolates differences at the build pipeline level (builder choice, loader rules, asset copying).
+
+**Minimal surface area**
+Webpack changes are scoped to `@arcgis/*` and `@esri/*` to reduce collateral effects on the rest of the dependency graph.
+
+## Run the repro
+
+### Requirements
+
+- **Node.js** 20+
+- Optional: **Docker** + Docker Compose v2 (for “deploy-like” static hosting)
+
+### Build A (esbuild) and B (webpack)
 
 ```bash
 npm ci
-npm run build:esbuild    # output: dist/app/browser
-npm run build:webpack    # output: dist-webpack
-npm run build:all        # runs both sequentially
+npm run build:esbuild   # output: dist/app/browser
+npm run build:webpack   # output: dist-webpack
+npm run build:all       # builds A then B
 ```
 
-## Production with Docker (nginx)
-
-Run commands from the **repository root** (same as the `npm` scripts).
-
-| Command | What it starts | URL |
-|---------|----------------|-----|
-| `npm run docker:prod` | **Both** images: esbuild on **8080**, webpack on **8081** | http://localhost:8080 and http://localhost:8081 |
-| `npm run docker:prod-esbuild` | esbuild build + nginx only | http://localhost:8080 |
-| `npm run docker:prod-webpack` | webpack build + nginx only | http://localhost:8080 |
-
-Development in a container (`ng serve` with bind mounts):
+Serve the outputs locally (static hosting):
 
 ```bash
-npm run docker:dev       # http://localhost:4200
+npm run serve:esbuild   # http://localhost:4201
+npm run serve:webpack   # http://localhost:4202
 ```
 
-Scripts use `docker compose --project-directory . -f .docker/...` so paths and volumes resolve against the project root.
+### Compare via Docker + nginx (recommended for A/B)
 
-## Main stack
+```bash
+npm run docker:prod
+```
 
-Angular 20, `@angular/build` (esbuild), `@angular-builders/custom-webpack`, `@arcgis/core` and `@arcgis/map-components` 4.34, `@esri/calcite-components`, `style-loader` / `css-loader` in the webpack merge.
+This starts:
+- **esbuild** on `http://localhost:8080`
+- **webpack** on `http://localhost:8081`
+
+Single-pipeline variants:
+
+```bash
+npm run docker:prod-esbuild
+npm run docker:prod-webpack
+```
+
+Development container (Angular dev-server):
+
+```bash
+npm run docker:dev  # http://localhost:4200
+```
+
+## What differs between the two builds
+
+- **Build target**:
+  - `app:build:production` uses `@angular/build:application` (esbuild)
+  - `app:build-webpack:production` uses `@angular-builders/custom-webpack:browser`
+- **Output paths**:
+  - esbuild: `dist/app/browser`
+  - webpack: `dist-webpack`
+- **Webpack merge**: `webpack.arcgis-css.cjs`
+  - Excludes ArcGIS chunks from Angular’s Babel loader (when present)
+  - Adds loader rules for ArcGIS/Esri CSS and font assets
+  - Keeps the scope limited to `node_modules/@arcgis` and `node_modules/@esri`
+
+## Technology stack
+
+**Frontend:** Angular 20, TypeScript  
+**Build:** `@angular/build` (esbuild), `@angular-builders/custom-webpack`, webpack loaders for ArcGIS/Esri CSS/assets  
+**Esri:** `@arcgis/core` 4.34, `@arcgis/map-components` 4.34, `@esri/calcite-components`  
+**Infrastructure:** Docker, nginx
+
+Key choices:
+- **Two build targets in `angular.json`**: enables A/B without touching app code.
+- **Separate output path (`dist-webpack`)**: avoids collisions and makes diffs explicit.
+- **Scoped webpack rules**: reduces risk of changing behavior outside ArcGIS/Esri packages.
+- **nginx static hosting**: approximates production serving semantics and caching behavior.
+
+---
+
+**Status**: Example repo for isolating ArcGIS/Calcite runtime divergences between Angular esbuild and webpack builds.
