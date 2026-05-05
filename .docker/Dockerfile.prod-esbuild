@@ -8,7 +8,7 @@ RUN npm ci
 COPY . .
 
 RUN npm run build:esbuild
-RUN mkdir -p /app/nginx-html && cp -r /app/dist/app/browser/. /app/nginx-html/
+RUN mkdir -p /app/nginx-html && cp -r /app/dist-esbuild/browser/. /app/nginx-html/
 
 FROM nginx:alpine
 

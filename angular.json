@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist-esbuild",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -27,6 +28,16 @@
                 "glob": "**/*",
                 "input": "node_modules/@esri/calcite-components/dist/calcite/assets",
                 "output": "calcite-components/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@arcgis/core/assets",
+                "output": "assets/vendor/arcgis-core/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@arcgis/map-components/dist/cdn",
+                "output": "assets/vendor/arcgis-map-components"
               }
             ],
             "styles": [

@@ -6,7 +6,7 @@
     "build:esbuild": "ng build",
     "build:webpack": "ng run arcgis-build:build-webpack:production",
     "build:all": "npm run build:esbuild && npm run build:webpack",
-    "serve:esbuild": "serve dist/app/browser -l 4201 -s",
+    "serve:esbuild": "serve dist-esbuild/browser -l 4201 -s",
     "serve:webpack": "serve dist-webpack -l 4202 -s",
     "docker:dev": "docker compose --project-directory . -f .docker/docker-compose.dev.yml up --build",
     "docker:prod": "docker compose --project-directory . -f .docker/docker-compose.prod.yml up --build",

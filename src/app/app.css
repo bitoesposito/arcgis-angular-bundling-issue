@@ -10,6 +10,12 @@ calcite-shell.app-shell {
   min-height: 100%;
 }
 
+.view-mode-switch {
+  display: inline-flex;
+  padding: 0.5rem;
+  align-items: center;
+}
+
 .shell-panel-end {
   --calcite-shell-panel-min-width: min(100vw - 1rem, 420px);
   max-width: min(100vw - 1rem, 440px);

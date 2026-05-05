@@ -1,31 +1,58 @@
 <calcite-shell content-behind class="app-shell">
   <calcite-navigation slot="header">
     <calcite-navigation-logo
-      heading="Webpack build"
+      heading="ArcGIS build issue"
       icon="clustering"
       alt="Application logo"
       slot="logo"
     ></calcite-navigation-logo>
+    <div slot="content-end" class="view-mode-switch" aria-label="View mode">
+      <calcite-button
+        [appearance]="viewMode() === '2d' ? 'solid' : 'outline'"
+        (click)="setViewMode('2d')"
+      >
+        2D
+      </calcite-button>
+      <calcite-button
+        [appearance]="viewMode() === '3d' ? 'solid' : 'outline'"
+        (click)="setViewMode('3d')"
+      >
+        3D
+      </calcite-button>
+    </div>
   </calcite-navigation>
   <calcite-shell-panel slot="panel-end" display-mode="float" class="shell-panel-end">
     <calcite-panel heading="Elevation profile" class="elevation-panel">
       <div class="elevation-panel__body">
         <arcgis-elevation-profile
           #epHost
-          reference-element="main-map"
+          [attr.reference-element]="viewMode() === '3d' ? 'main-scene' : 'main-map'"
           unit="metric"
         ></arcgis-elevation-profile>
       </div>
     </calcite-panel>
   </calcite-shell-panel>
-  <arcgis-map
-    #mapHost
-    id="main-map"
-    basemap="streets-vector"
-    center="12.5, 41.9"
-    zoom="5"
-    ground="world-elevation"
-  >
-    <arcgis-zoom slot="top-left"></arcgis-zoom>
-  </arcgis-map>
+  @if (viewMode() === '3d') {
+    <arcgis-scene
+      #sceneHost
+      id="main-scene"
+      basemap="streets-vector"
+      center="12.5, 41.9"
+      zoom="5"
+      ground="world-elevation"
+    >
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+    </arcgis-scene>
+  } @else {
+    <arcgis-map
+      #mapHost
+      id="main-map"
+      basemap="streets-vector"
+      center="12.5, 41.9"
+      zoom="5"
+      ground="world-elevation"
+    >
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+    </arcgis-map>
+  }
 </calcite-shell>

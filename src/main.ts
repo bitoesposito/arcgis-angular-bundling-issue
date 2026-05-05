@@ -1,11 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import esriConfig from '@arcgis/core/config.js';
+import { setAssetPath as setArcgisAssetPath } from '@arcgis/map-components';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import { setAssetPath } from '@esri/calcite-components';
 
-const ARCGIS_CDN = 'https://js.arcgis.com/4.34';
-esriConfig.assetsPath = `${ARCGIS_CDN}/@arcgis/core/assets`;
+esriConfig.assetsPath = new URL('assets/vendor/arcgis-core/assets', document.baseURI).href;
+setArcgisAssetPath(new URL('assets/vendor/arcgis-map-components/', document.baseURI).href);
 
 setAssetPath(new URL('calcite-components/', document.baseURI).href);
 

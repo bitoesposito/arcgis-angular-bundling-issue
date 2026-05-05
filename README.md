@@ -62,7 +62,7 @@ npm run docker:prod-webpack
   - `arcgis-build:build:production` uses `@angular/build:application` (esbuild)
   - `arcgis-build:build-webpack:production` uses `@angular-builders/custom-webpack:browser`
 - **Output paths**:
-  - esbuild: `dist/app/browser`
+  - esbuild: `dist-esbuild/browser`
   - webpack: `dist-webpack`
 - **Webpack merge**: `webpack.arcgis-css.cjs`
   - Excludes ArcGIS chunks from Angular’s Babel loader (when present)
